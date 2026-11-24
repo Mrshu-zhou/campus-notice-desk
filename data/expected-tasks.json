@@ -1,0 +1,256 @@
+{
+  "tasks": [
+    {
+      "id": "task-class-forward-1",
+      "noticeId": "stu-wechat-class-forward",
+      "role": "student",
+      "title": "交普通话报名表",
+      "action": "打印并签名「普通话报名表2026秋」（群文件置顶），携带学生证复印件交到教务办二教105",
+      "deadline": null,
+      "deadlineText": "这周五还是下周五",
+      "materials": [
+        "普通话报名表2026秋（群文件置顶）",
+        "签名",
+        "学生证复印件"
+      ],
+      "category": "needs_confirm",
+      "status": "todo",
+      "sourceQuote": "对了普通话那个表我也不确定是这周五还是下周五，辅导员原话是「尽快，最好这周」",
+      "sourceStart": 270,
+      "sourceEnd": 308
+    },
+    {
+      "id": "task-class-forward-2",
+      "noticeId": "stu-wechat-class-forward",
+      "role": "student",
+      "title": "报名迎新志愿者（自愿）",
+      "action": "下周三下午若没课、愿意参加迎新志愿者，把名字发给班委；非强制",
+      "deadline": "2026-11-25",
+      "deadlineText": "下周三下午",
+      "materials": [],
+      "category": "action",
+      "status": "todo",
+      "sourceQuote": "下周三下午没课的来帮一下迎新志愿者，自愿的，想去的把名字发给我",
+      "sourceStart": 205,
+      "sourceEnd": 236
+    },
+    {
+      "id": "task-class-forward-3",
+      "noticeId": "stu-wechat-class-forward",
+      "role": "student",
+      "title": "准备宿舍卫生抽查",
+      "action": "下周一起不要把脏衣服堆在宿舍门口，做好卫生",
+      "deadline": "2026-11-23",
+      "deadlineText": "下周一开始查宿舍卫生",
+      "materials": [],
+      "category": "action",
+      "status": "todo",
+      "sourceQuote": "学院说下周一开始查宿舍卫生，晚上别把脏衣服堆门口就行",
+      "sourceStart": 242,
+      "sourceEnd": 268
+    },
+    {
+      "id": "task-course-check-1",
+      "noticeId": "stu-course-course-check",
+      "role": "student",
+      "title": "提交课程设计第3次检查材料",
+      "action": "在课程平台提交命名为「学号_姓名_课程设计3.zip」的材料包，姓名用中文、与学籍一致",
+      "deadline": "2026-11-27",
+      "deadlineText": "11月27日（周五）23:59前",
+      "materials": [
+        "需求规格说明书（PDF）",
+        "原型截图（zip）",
+        "个人贡献说明（每人一页）"
+      ],
+      "category": "action",
+      "status": "todo",
+      "sourceQuote": "时间：11月27日（周五）23:59前将材料提交到课程平台",
+      "sourceStart": 252,
+      "sourceEnd": 281
+    },
+    {
+      "id": "task-course-check-2",
+      "noticeId": "stu-course-course-check",
+      "role": "student",
+      "title": "如需请假请私聊老师",
+      "action": "若无法按时提交，于11月25日前私聊任课老师，不要在群里刷屏",
+      "deadline": "2026-11-25",
+      "deadlineText": "11月25日前",
+      "materials": [],
+      "category": "action",
+      "status": "todo",
+      "sourceQuote": "有事请假请于11月25日前私聊我，不要在群里刷屏。",
+      "sourceStart": 358,
+      "sourceEnd": 383
+    },
+    {
+      "id": "task-course-check-3",
+      "noticeId": "stu-course-course-check",
+      "role": "student",
+      "title": "参加中期答辩",
+      "action": "12月2日周三3-4节到博学楼B302参加中期答辩，先占好时间（分组名单后天发）",
+      "deadline": "2026-12-02",
+      "deadlineText": "12月2日周三3-4节",
+      "materials": [],
+      "category": "action",
+      "status": "todo",
+      "sourceQuote": "另外12月2日周三3-4节在博学楼B302做中期答辩，分组名单后天发，先占好时间。",
+      "sourceStart": 385,
+      "sourceEnd": 426
+    },
+    {
+      "id": "task-scholarship-1",
+      "noticeId": "stu-email-scholarship",
+      "role": "student",
+      "title": "申报校级优秀学生奖学金",
+      "action": "在教务系统「奖助学金」模块提交申请，并将签字后的申请表扫描件发至学院邮箱",
+      "deadline": "2026-12-05",
+      "deadlineText": "12月5日17:00前",
+      "materials": [
+        "申请表",
+        "成绩单",
+        "获奖证书复印件",
+        "辅导员意见页（需签字）",
+        "申请表扫描件"
+      ],
+      "category": "action",
+      "status": "todo",
+      "sourceQuote": "请符合条件的同学于12月5日17:00前在教务系统「奖助学金」模块提交申请，同时将签字后的申请表扫描件发送至学院邮箱",
+      "sourceStart": 30,
+      "sourceEnd": 88
+    },
+    {
+      "id": "task-library-1",
+      "noticeId": "stu-fyi-library",
+      "role": "student",
+      "title": "本周末图书馆闭馆盘点",
+      "action": "知悉11月21日-22日图书馆闭馆，23日恢复开放；电子资源不受影响，无需回复",
+      "deadline": null,
+      "deadlineText": "11月21日-22日闭馆，电子资源正常。23日（周一）恢复开放",
+      "materials": [],
+      "category": "fyi",
+      "status": "todo",
+      "sourceQuote": "本周末图书馆闭馆盘点，11月21日-22日闭馆，电子资源正常。23日（周一）恢复开放。本通知无需回复。",
+      "sourceStart": 0,
+      "sourceEnd": 51
+    },
+    {
+      "id": "task-lab-report-1",
+      "noticeId": "stu-ambiguous-lab-report",
+      "role": "student",
+      "title": "改交线上实验报告（截止未公布）",
+      "action": "不要再交纸质实验报告，改为线上提交；截止日期等待课程平台通知，暂不编造",
+      "deadline": null,
+      "deadlineText": "具体啥时候截止他没说，让等课程平台通知",
+      "materials": [],
+      "category": "needs_confirm",
+      "status": "todo",
+      "sourceQuote": "老师说实验报告不用交纸质了，改成线上，具体啥时候截止他没说，让等课程平台通知。先别交纸质版。",
+      "sourceStart": 141,
+      "sourceEnd": 187
+    },
+    {
+      "id": "task-stay-1",
+      "noticeId": "cou-email-stay-and-meeting",
+      "role": "counselor",
+      "title": "汇总寒假留校申请表",
+      "action": "汇总本年级《学生寒假留校申请表》，电子版发回本邮件，纸质版交学生处203",
+      "deadline": "2026-11-27",
+      "deadlineText": "11月27日12:00前",
+      "materials": [
+        "学生寒假留校申请表（模板见附件）",
+        "电子版",
+        "纸质版"
+      ],
+      "category": "action",
+      "status": "todo",
+      "sourceQuote": "请于11月27日12:00前汇总本年级《学生寒假留校申请表》，电子版发本邮箱，纸质版交学生处203。",
+      "sourceStart": 9,
+      "sourceEnd": 59
+    },
+    {
+      "id": "task-stay-2",
+      "noticeId": "cou-email-stay-and-meeting",
+      "role": "counselor",
+      "title": "参加安全工作例会",
+      "action": "到行政楼会议室参加安全工作例会，并携带本月宿舍查寝记录；未请假视为缺席",
+      "deadline": "2026-11-26",
+      "deadlineText": "11月26日下午14:30",
+      "materials": [
+        "本月宿舍查寝记录"
+      ],
+      "category": "action",
+      "status": "todo",
+      "sourceQuote": "11月26日下午14:30在行政楼会议室召开安全工作例会，请准时参加，并带本月宿舍查寝记录。未请假视为缺席。",
+      "sourceStart": 69,
+      "sourceEnd": 123
+    },
+    {
+      "id": "task-weekly-1",
+      "noticeId": "cou-mixed-weekly-work",
+      "role": "counselor",
+      "title": "录入秋季回访记录",
+      "action": "将家庭经济困难学生秋季回访记录录入学工系统",
+      "deadline": "2026-11-25",
+      "deadlineText": "截止11月25日",
+      "materials": [
+        "秋季回访记录"
+      ],
+      "category": "action",
+      "status": "todo",
+      "sourceQuote": "家庭经济困难学生秋季回访记录录入学工系统，截止11月25日。",
+      "sourceStart": 35,
+      "sourceEnd": 65
+    },
+    {
+      "id": "task-weekly-2",
+      "noticeId": "cou-mixed-weekly-work",
+      "role": "counselor",
+      "title": "开防诈骗班会并提交签到表",
+      "action": "11月23日晚7点召开防诈骗主题班会，签到表于会后当天提交",
+      "deadline": "2026-11-23",
+      "deadlineText": "下周一（11月23日）晚7点",
+      "materials": [
+        "班会签到表"
+      ],
+      "category": "action",
+      "status": "todo",
+      "sourceQuote": "下周一（11月23日）晚7点班级开班会，主题是防诈骗，签到表会后当天提交。",
+      "sourceStart": 68,
+      "sourceEnd": 105
+    },
+    {
+      "id": "task-weekly-3",
+      "noticeId": "cou-mixed-weekly-work",
+      "role": "counselor",
+      "title": "约谈学分预警学生（名单未附）",
+      "action": "本周内约谈3名学分预警学生并上传约谈记录；名单在内网，本通知未附名单，需自行确认",
+      "deadline": null,
+      "deadlineText": "本周内约谈",
+      "materials": [
+        "约谈记录",
+        "内网名单"
+      ],
+      "category": "needs_confirm",
+      "status": "todo",
+      "sourceQuote": "有3名学生（名单另附）学分预警，请本周内约谈并上传约谈记录。名单在内网，本邮件不附名单。",
+      "sourceStart": 114,
+      "sourceEnd": 158
+    },
+    {
+      "id": "task-classroom-1",
+      "noticeId": "cou-fyi-classroom-booking",
+      "role": "counselor",
+      "title": "教室借用改为网上审批",
+      "action": "知悉12月起教室借用改为网上审批，原纸质申请表停用，无需回执",
+      "deadline": null,
+      "deadlineText": "12月起",
+      "materials": [],
+      "category": "fyi",
+      "status": "todo",
+      "sourceQuote": "12月起教室借用改为网上审批，原纸质申请表停用。政策原文见OA。请知悉，无需回执。",
+      "sourceStart": 7,
+      "sourceEnd": 48
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=390, initial-scale=1" />
+<title>校园通知截图样例</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #ededed; }
+  body {
+    width: 390px;
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    color: #1c1c1c;
+  }
+  .status {
+    height: 44px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 22px; background: #ededed; font-size: 14px; font-weight: 650;
+  }
+  .status span:last-child { letter-spacing: 1px; }
+  .topbar {
+    height: 54px; display: flex; align-items: center; gap: 12px; padding: 0 16px;
+    background: #ededed; border-bottom: 1px solid #dcdcdc; position: relative;
+  }
+  .back { font-size: 24px; line-height: 1; color: #333; }
+  .chat-title { min-width: 0; }
+  .chat-title strong { display: block; font-size: 16px; line-height: 1.2; }
+  .chat-title small { display: block; margin-top: 3px; color: #8a8a8a; font-size: 11px; }
+  .more { margin-left: auto; color: #666; font-size: 20px; letter-spacing: 2px; }
+  .chat { padding: 16px 14px 22px; background: #ededed; }
+  .time { margin: 4px 0 16px; text-align: center; color: #9a9a9a; font-size: 11px; }
+  .msg { display: flex; align-items: flex-start; gap: 9px; margin-bottom: 15px; }
+  .avatar {
+    width: 36px; height: 36px; flex: 0 0 auto; border-radius: 5px;
+    display: grid; place-items: center; color: #fff; font-size: 13px; font-weight: 700;
+  }
+  .avatar.a { background: #7f9bb5; }
+  .avatar.b { background: #b88b78; }
+  .avatar.c { background: #6e9b80; }
+  .avatar.d { background: #a393b8; }
+  .avatar.e { background: #c39b62; }
+  .bubble-wrap { max-width: 292px; }
+  .name { margin-bottom: 4px; color: #8a8a8a; font-size: 11px; }
+  .bubble {
+    padding: 9px 11px; border-radius: 5px; background: #fff; font-size: 14px; line-height: 1.55;
+    word-break: break-word;
+  }
+  .official .bubble { background: #fdfaf2; border: 1px solid #eadcb8; }
+  .tag {
+    display: inline-block; margin-right: 5px; padding: 0 5px; border-radius: 3px;
+    background: #e9f2ec; color: #2e6b51; font-size: 11px; line-height: 18px; vertical-align: 1px;
+  }
+  .emphasis { color: #a33d2f; font-weight: 700; }
+  .quote-block {
+    margin-top: 7px; padding: 8px 9px; border-left: 3px solid #c7a95c; background: #fffdf7;
+    color: #38302a; font-size: 13px; line-height: 1.6;
+  }
+  .link { color: #3d70a5; word-break: break-all; }
+  .self { justify-content: flex-end; }
+  .self .bubble-wrap { display: flex; flex-direction: column; align-items: flex-end; }
+  .self .bubble { background: #95ec69; }
+  .file {
+    width: 238px; border-radius: 5px; overflow: hidden; background: #fff;
+  }
+  .file-top { display: flex; gap: 10px; align-items: center; padding: 12px; }
+  .file-icon {
+    width: 38px; height: 44px; border-radius: 4px; background: #e8effa; color: #5079ad;
+    display: grid; place-items: center; font-size: 11px; font-weight: 800;
+  }
+  .file-name { font-size: 13px; line-height: 1.4; }
+  .file-size { margin-top: 4px; color: #999; font-size: 11px; }
+  .inputbar {
+    height: 56px; display: flex; align-items: center; gap: 10px; padding: 0 12px;
+    border-top: 1px solid #dcdcdc; background: #f7f7f7; color: #8b8b8b; font-size: 13px;
+  }
+  .input { flex: 1; height: 36px; padding: 0 12px; border-radius: 4px; background: #fff; display: flex; align-items: center; }
+  .mark { display: inline-block; padding: 0 4px; border-radius: 2px; background: #ffe8a8; color: #5d4500; }
+</style>
+</head>
+<body>
+  <div class="status"><span>19:52</span><span>5G &nbsp; 86%</span></div>
+  <div class="topbar">
+    <span class="back">‹</span>
+    <div class="chat-title"><strong>软件工程2301班</strong><small>周琪：群聊（46）</small></div>
+    <span class="more">···</span>
+  </div>
+  <div class="chat">
+    <div class="time">今天 19:28</div>
+
+    <div class="msg">
+      <div class="avatar a">雪</div>
+      <div class="bubble-wrap"><div class="name">陈雪</div><div class="bubble">明天高数小测吗？第三题我还不会</div></div>
+    </div>
+
+    <div class="msg">
+      <div class="avatar b">凯</div>
+      <div class="bubble-wrap"><div class="name">阿凯</div><div class="bubble">先吃饭，七点老地方</div></div>
+    </div>
+
+    <div class="msg official">
+      <div class="avatar c">琪</div>
+      <div class="bubble-wrap">
+        <div class="name">班长-周琪</div>
+        <div class="bubble">
+          <span class="tag">转发通知</span>@所有人 教务处的实验室安全准入通知：<span class="emphasis">2026年11月27日（周五）17:00前</span>，请各班学习委员收齐《实验室安全准入承诺书》，<span class="emphasis">每人一份，必须本人签名</span>，交到信息楼A312。
+          <div class="quote-block">
+            <strong>电子版要求：</strong>命名「班级+姓名+学号」，发到邮箱 <span class="link">labsafe@campus.edu.cn</span>。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="msg official">
+      <div class="avatar d">杨</div>
+      <div class="bubble-wrap">
+        <div class="name">学习委员-杨柳</div>
+        <div class="bubble">补充：承诺书是每个人都要签，不是只交一份。群里只发过空表，没填的同学自己在<span class="mark">群文件</span>下载，别交空白表。文件叫「2026实验室安全承诺书.pdf」。</div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="avatar a">雪</div>
+      <div class="bubble-wrap">
+        <div class="name">陈雪</div>
+        <div class="file">
+          <div class="file-top"><div class="file-icon">PDF</div><div><div class="file-name">2026实验室安全承诺书.pdf</div><div class="file-size">2.4 MB · 群文件</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="avatar b">凯</div>
+      <div class="bubble-wrap"><div class="name">阿凯</div><div class="bubble">收到</div></div>
+    </div>
+
+    <div class="msg">
+      <div class="avatar e">敏</div>
+      <div class="bubble-wrap"><div class="name">王敏</div><div class="bubble">今晚操场还去吗，篮球场人少</div></div>
+    </div>
+
+    <div class="msg official">
+      <div class="avatar c">琪</div>
+      <div class="bubble-wrap">
+        <div class="name">班长-周琪</div>
+        <div class="bubble"><span class="tag">提醒</span>另外11月26日（周四）晚7点在宿舍楼下集合，参加消防演练，不用带东西。</div>
+      </div>
+    </div>
+
+    <div class="msg self">
+      <div class="bubble-wrap"><div class="bubble">收到，我今晚回去填好再打印</div></div>
+      <div class="avatar d">我</div>
+    </div>
+
+    <div class="time">以上为虚构演示内容</div>
+  </div>
+  <div class="inputbar"><span>⌨</span><div class="input">发消息…</div><span>＋</span></div>
+</body>
+</html>

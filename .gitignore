@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.DS_Store
+*.tsbuildinfo
+.qoder-sites/
+.qoder-sites.json
+
+# Additional publish exclusions (do not upload local browser profile or Sites deploy config)
+dev/.edge-render-profile/
+.校园通知任务台.qoder.site
+*.qoder.site

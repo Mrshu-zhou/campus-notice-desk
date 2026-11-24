@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>通知任务台 · 界面原型</title>
+  <style>
+    :root {
+      --bg: #f3f1ec;
+      --surface: #fffcf8;
+      --line: #e6e0d6;
+      --ink: #1c1915;
+      --muted: #6f6a62;
+      --accent: #1f4e46;
+      --accent-soft: #e4f0ed;
+      --amber: #8a5800;
+      --amber-bg: #f8ecd6;
+      --rose: #9b2c2c;
+      --rose-bg: #f8e4e4;
+      --chip: #efeae1;
+      --shadow: 0 1px 2px rgba(28,25,21,.06), 0 8px 24px rgba(28,25,21,.04);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      font-family: "PingFang SC", "Noto Sans SC", "Source Han Sans SC", system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+    }
+    .app { min-height: 100%; display: flex; flex-direction: column; }
+    header {
+      display: flex; align-items: center; gap: 16px;
+      padding: 10px 20px; background: var(--surface);
+      border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 5;
+    }
+    .logo { font-weight: 700; letter-spacing: .02em; font-size: 16px; }
+    .logo span { color: var(--accent); }
+    .tour {
+      flex: 1; display: flex; align-items: center; gap: 8px;
+      font-size: 12px; color: var(--muted); overflow: auto;
+    }
+    .tour b { color: var(--ink); font-weight: 600; }
+    .step {
+      border: 1px solid var(--line); background: #fff;
+      border-radius: 999px; padding: 4px 10px; white-space: nowrap; cursor: pointer;
+    }
+    .step.on { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+    .roles { display: flex; background: var(--chip); border-radius: 999px; padding: 3px; }
+    .roles button, .paste-btn, .icon-btn {
+      font: inherit; border: 0; cursor: pointer;
+    }
+    .roles button {
+      background: transparent; color: var(--muted);
+      padding: 6px 12px; border-radius: 999px;
+    }
+    .roles button.on { background: #fff; color: var(--ink); box-shadow: var(--shadow); }
+    .paste-btn {
+      background: var(--accent); color: #fff; border-radius: 10px;
+      padding: 8px 14px; font-weight: 600;
+    }
+    .today {
+      margin: 14px 20px 0; background: var(--surface);
+      border: 1px solid var(--line); border-radius: 14px;
+      padding: 12px 14px; display: flex; gap: 10px; align-items: center;
+      box-shadow: var(--shadow);
+    }
+    .today h2 { margin: 0 8px 0 0; font-size: 13px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+    .pills { display: flex; gap: 8px; overflow: auto; flex: 1; }
+    .pill {
+      border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px;
+      background: #fff; font-size: 13px; cursor: pointer; white-space: nowrap;
+    }
+    .pill em { font-style: normal; color: var(--muted); margin-left: 8px; font-size: 12px; }
+    .pill.warn { background: var(--amber-bg); border-color: #ead7a8; }
+    .pill.due { background: var(--rose-bg); border-color: #ecc8c8; }
+    .workspace {
+      flex: 1; display: grid; grid-template-columns: 280px 1fr 320px;
+      gap: 12px; padding: 12px 20px 20px; min-height: 0;
+    }
+    .col {
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: 14px; display: flex; flex-direction: column; min-height: 520px;
+      box-shadow: var(--shadow); overflow: hidden;
+    }
+    .col h3 {
+      margin: 0; padding: 12px 14px; font-size: 13px; color: var(--muted);
+      border-bottom: 1px solid var(--line); font-weight: 600;
+    }
+    .list { overflow: auto; }
+    .item {
+      padding: 12px 14px; border-bottom: 1px solid var(--line); cursor: pointer;
+    }
+    .item:hover { background: #faf7f2; }
+    .item.on { background: var(--accent-soft); }
+    .item .meta { display: flex; gap: 6px; align-items: center; margin-bottom: 4px; }
+    .tag { font-size: 11px; background: var(--chip); border-radius: 6px; padding: 1px 6px; color: #4f4a43; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); display: inline-block; }
+    .dot.off { background: transparent; border: 1px solid #c9c3b8; }
+    .item h4 { margin: 0 0 4px; font-size: 14px; font-weight: 650; }
+    .item p { margin: 0; font-size: 12px; color: var(--muted); }
+    .body {
+      padding: 16px 18px 24px; white-space: pre-wrap; line-height: 1.7;
+      font-size: 14px; overflow: auto;
+    }
+    .mail-head { padding: 14px 18px 0; font-size: 13px; color: var(--muted); }
+    .mail-head strong { color: var(--ink); display: block; font-size: 16px; margin-bottom: 6px; }
+    mark {
+      background: #c8eadf; color: inherit; padding: 0 2px; border-radius: 3px;
+    }
+    .bubble {
+      background: #fff; border: 1px solid var(--line); border-radius: 12px 12px 12px 4px;
+      padding: 12px 14px;
+    }
+    .tasks { overflow: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+    .card {
+      border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: #fff; cursor: pointer;
+    }
+    .card.on { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+    .card.warn { background: var(--amber-bg); border-color: #ead7a8; }
+    .card.fyi { opacity: .85; }
+    .card h4 { margin: 0 0 6px; font-size: 14px; }
+    .card p { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .badges { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+    .badge { font-size: 11px; padding: 2px 7px; border-radius: 999px; background: var(--chip); }
+    .badge.warn { background: #f0d8a2; color: var(--amber); }
+    .badge.ok { background: var(--accent-soft); color: var(--accent); }
+    .row-actions { display: flex; gap: 8px; align-items: center; margin-top: 8px; font-size: 12px; }
+    .row-actions label { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+    footer {
+      padding: 8px 20px 14px; font-size: 12px; color: var(--muted);
+    }
+    dialog {
+      border: 1px solid var(--line); border-radius: 16px; width: min(640px, 92vw);
+      padding: 0; box-shadow: var(--shadow); background: var(--surface);
+    }
+    dialog::backdrop { background: rgba(28,25,21,.35); }
+    .dlg { padding: 20px; }
+    .dlg h2 { margin: 0 0 8px; font-size: 18px; }
+    .dlg textarea {
+      width: 100%; min-height: 140px; margin: 10px 0; font: inherit;
+      border: 1px solid var(--line); border-radius: 10px; padding: 10px; resize: vertical;
+    }
+    .samples { display: grid; gap: 8px; margin: 8px 0 14px; }
+    .sample {
+      border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: #fff;
+      font-size: 13px; cursor: pointer; text-align: left;
+    }
+    .dlg-actions { display: flex; justify-content: flex-end; gap: 8px; }
+    .dlg-actions button { font: inherit; border-radius: 10px; padding: 8px 12px; cursor: pointer; }
+    .ghost { background: #fff; border: 1px solid var(--line); }
+    #article { flex: 1; min-height: 0; overflow: auto; }
+    .thread { padding: 12px 16px 20px; }
+    .msg { margin: 0 0 14px; }
+    .msg .who { font-size: 12px; color: var(--muted); margin: 0 0 4px; }
+    .msg .bubble, .bubble { white-space: pre-wrap; }
+    .msg.official .bubble { background: #f7fbf9; border-color: #c5ddd6; }
+
+    .pipeline {
+      margin: 12px 20px 0; background: var(--surface);
+      border: 1px solid var(--line); border-radius: 14px;
+      padding: 12px 16px 10px; box-shadow: var(--shadow);
+    }
+    .pipeline-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+    .pipeline-head h2 { margin: 0; font-size: 13px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+    .pipeline-head p { margin: 0; font-size: 12px; color: var(--muted); }
+    .steps {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; list-style: none;
+      margin: 0; padding: 0;
+    }
+    .steps li {
+      border: 1px solid var(--line); background: #fff; border-radius: 12px; padding: 8px 10px;
+      min-height: 64px;
+    }
+    .steps li b { display: block; font-size: 13px; margin-bottom: 2px; }
+    .steps li span { display: block; font-size: 12px; color: var(--muted); line-height: 1.4; }
+    .steps li.run { border-color: var(--accent); background: var(--accent-soft); }
+    .steps li.done { border-color: #c5ddd6; background: #f7fbf9; }
+    .steps li.run b, .steps li.done b { color: var(--accent); }
+    .plog { margin: 8px 0 0; font-size: 12px; color: var(--ink); line-height: 1.55; }
+    .plog div { padding: 1px 0; }
+    .plog .mute { color: var(--muted); }
+    .cta-box {
+      margin: 8px; padding: 16px; border: 1px dashed #c9c3b8; border-radius: 12px;
+      background: #fff; text-align: left;
+    }
+    .cta-box p { margin: 0 0 12px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .card.new { animation: pop .35s ease-out; }
+    @keyframes pop { from { transform: translateY(6px); opacity: 0; } to { transform: none; opacity: 1; } }
+    .msg.new .bubble { box-shadow: 0 0 0 3px var(--accent-soft); }
+    @media (max-width: 960px) {
+      .steps { grid-template-columns: 1fr 1fr; }
+      .workspace { grid-template-columns: 1fr; }
+      .col { min-height: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="logo">通知<span>任务台</span></div>
+      <div class="tour" id="tour">
+        <b>建议体验</b>
+        <span class="step on" data-step="1">1. 看新通知被识别并写入待办</span>
+        <span class="step" data-step="2">2. 标已读，任务仍在</span>
+        <span class="step" data-step="3">3. 切换到辅导员</span>
+        <span class="step" data-step="4">4. 粘贴一段再拆一次</span>
+      </div>
+      <div class="roles">
+        <button class="on" id="role-student" type="button">学生</button>
+        <button id="role-counselor" type="button">辅导员</button>
+      </div>
+      <button class="paste-btn" id="open-paste" type="button">粘贴通知</button>
+    </header>
+
+    <section class="today">
+      <h2>今日待办</h2>
+      <div class="pills" id="pills"></div>
+    </section>
+
+
+    <section class="pipeline" id="pipeline">
+      <div class="pipeline-head">
+        <h2>技术流程</h2>
+        <p>评委可现场看完：接入新消息 → 识别正式通知 → 抽取任务 → 写入待办</p>
+      </div>
+      <ol class="steps" id="pipeline-steps">
+        <li data-key="ingest"><b>1. 接入</b><span>收到班级群里的新消息</span></li>
+        <li data-key="classify"><b>2. 识别</b><span>区分正式通知、闲聊和知识分享</span></li>
+        <li data-key="extract"><b>3. 抽取</b><span>拆成结构化任务，并回指原文</span></li>
+        <li data-key="write"><b>4. 写入待办</b><span>加入今日待办；已读仍不等于已完成</span></li>
+      </ol>
+      <div class="plog" id="pipeline-log"></div>
+    </section>
+
+    <main class="workspace">
+      <section class="col">
+        <h3>通知</h3>
+        <div class="list" id="list"></div>
+      </section>
+      <section class="col">
+        <h3 id="source-title">原文</h3>
+        <div id="article"></div>
+      </section>
+      <section class="col">
+        <h3>拆出的任务</h3>
+        <div class="tasks" id="tasks"></div>
+      </section>
+    </main>
+    <footer>演示数据为虚构校园通知。已读不等于已完成。粘贴内容只保存在本机浏览器，评委无需登录。</footer>
+  </div>
+
+  <dialog id="paste">
+    <div class="dlg">
+      <h2>粘贴一条刚收到的通知</h2>
+      <p style="margin:0;color:var(--muted);font-size:13px;">走和真实导入同一条链路。没有自己的通知时，可先复制下面的示例再拆。</p>
+      <div class="samples">
+        <button class="sample" data-sample="stu" type="button">学生示例：四级报名夹在约饭和笔记分享中间。</button>
+        <button class="sample" data-sample="cou" type="button">辅导员示例：11月30日前报送冬季长跑名单。</button>
+      </div>
+      <label for="src" style="font-size:13px;color:var(--muted);">来源</label>
+      <select id="src" style="font:inherit;margin-left:8px;border:1px solid var(--line);border-radius:8px;padding:4px 8px;">
+        <option>班级群</option>
+        <option>课程群</option>
+        <option>邮件</option>
+      </select>
+      <textarea id="paste-text" placeholder="在这里粘贴通知原文…"></textarea>
+      <div class="dlg-actions">
+        <button class="ghost" id="close-paste" type="button">取消</button>
+        <button class="paste-btn" id="run-paste" type="button">拆成任务</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    const STUDENT = "stu-wechat-class-forward";
+    const COUNSELOR = "cou-email-stay-and-meeting";
+    const notices = {
+  "stu-wechat-class-forward": {
+    "role": "student",
+    "tag": "班级群",
+    "label": "软件工程2024级1班",
+    "unread": true,
+    "title": "班级群里：报名通知夹在闲聊和课堂笔记之间",
+    "time": "昨天 21:16",
+    "kind": "chat",
+    "body": "[21:05] 陈雪：\n今天高数作业好难啊，第三题有人会吗\n\n[21:08] 阿凯：\n我也不会，先放放。晚上还去操场打球吗\n\n[21:09] 陈雪：\n先吃饭，我在二食堂门口等你\n\n[21:16] 班长-周琪：\n@所有人 家人们看一下啊，辅导员刚在群里说的我给你们转一下\n\n1. 本周五之前把普通话报名表交到教务办，二教105，表在群文件里，叫「普通话报名表2026秋」，打印出来签名，学生证复印件也要带\n2. 下周三下午没课的来帮一下迎新志愿者，自愿的，想去的把名字发给我\n3. 另外学院说下周一开始查宿舍卫生，晚上别把脏衣服堆门口就行\n\n对了普通话那个表我也不确定是这周五还是下周五，辅导员原话是「尽快，最好这周」，你们自己再看一眼群文件通知吧\n\n[21:17] 李想：\n收到\n\n[21:17] 阿凯：\n报名表是群文件哪个？我怎么只看到上次运动会的\n\n[21:18] 班长-周琪：\n就置顶那个「普通话报名表2026秋」，别下错了\n\n[21:21] 学习委员-杨柳：\n我把老师今天课上的板书整理了一下，二叉树中序遍历：左-根-右，课件和例题在群文件「11-19课堂笔记」。这个不是作业，就是给还没弄懂的同学看的，需要的自取。\n\n[21:22] 阿凯：\n谢谢杨柳！中序那里我正好绕晕了\n\n[21:23] 王敏：\n班长志愿者那项是强制的吗\n\n[21:24] 班长-周琪：\n不是强制，自愿，没课再来\n\n[21:25] 陈雪：\n那我不报名了，周四下午我有实验。打球的还是去二食堂集合哈",
+    "thread": [
+      {
+        "sender": "陈雪",
+        "time": "21:05",
+        "text": "今天高数作业好难啊，第三题有人会吗"
+      },
+      {
+        "sender": "阿凯",
+        "time": "21:08",
+        "text": "我也不会，先放放。晚上还去操场打球吗"
+      },
+      {
+        "sender": "陈雪",
+        "time": "21:09",
+        "text": "先吃饭，我在二食堂门口等你"
+      },
+      {
+        "sender": "班长-周琪",
+        "time": "21:16",
+        "text": "@所有人 家人们看一下啊，辅导员刚在群里说的我给你们转一下\n\n1. 本周五之前把普通话报名表交到教务办，二教105，表在群文件里，叫「普通话报名表2026秋」，打印出来签名，学生证复印件也要带\n2. 下周三下午没课的来帮一下迎新志愿者，自愿的，想去的把名字发给我\n3. 另外学院说下周一开始查宿舍卫生，晚上别把脏衣服堆门口就行\n\n对了普通话那个表我也不确定是这周五还是下周五，辅导员原话是「尽快，最好这周」，你们自己再看一眼群文件通知吧"
+      },
+      {
+        "sender": "李想",
+        "time": "21:17",
+        "text": "收到"
+      },
+      {
+        "sender": "阿凯",
+        "time": "21:17",
+        "text": "报名表是群文件哪个？我怎么只看到上次运动会的"
+      },
+      {
+        "sender": "班长-周琪",
+        "time": "21:18",
+        "text": "就置顶那个「普通话报名表2026秋」，别下错了"
+      },
+      {
+        "sender": "学习委员-杨柳",
+        "time": "21:21",
+        "text": "我把老师今天课上的板书整理了一下，二叉树中序遍历：左-根-右，课件和例题在群文件「11-19课堂笔记」。这个不是作业，就是给还没弄懂的同学看的，需要的自取。"
+      },
+      {
+        "sender": "阿凯",
+        "time": "21:22",
+        "text": "谢谢杨柳！中序那里我正好绕晕了"
+      },
+      {
+        "sender": "王敏",
+        "time": "21:23",
+        "text": "班长志愿者那项是强制的吗"
+      },
+      {
+        "sender": "班长-周琪",
+        "time": "21:24",
+        "text": "不是强制，自愿，没课再来"
+      },
+      {
+        "sender": "陈雪",
+        "time": "21:25",
+        "text": "那我不报名了，周四下午我有实验。打球的还是去二食堂集合哈"
+      }
+    ]
+  },
+  "stu-course-course-check": {
+    "role": "student",
+    "tag": "课程群",
+    "label": "软件工程课程设计",
+    "unread": true,
+    "title": "课程群里：知识分享之后才是第3次检查通知",
+    "time": "周一 18:45",
+    "kind": "chat",
+    "body": "[18:30] 张老师：\n今天课上有同学问最小生成树和最短路径的区别，我补一句：Prim/Kruskal 针对无向图连通网；Dijkstra 是单源最短路径，不能有负权。对照例题放在群文件「对照例题.pdf」，有兴趣可以看，不是作业。\n\n[18:31] 刘远：\n老师，有负权是不是用 Bellman-Ford？\n\n[18:32] 张老师：\n对，有负权但没有负环可以用 Bellman-Ford。下节课会提一下，先了解即可。\n\n[18:45] 张老师：\n各位同学好，软件工程课程设计第3次检查安排如下：\n\n时间：11月28日（周五）23:59前将材料提交到课程平台\n提交内容：需求规格说明书（PDF）、原型截图（zip）、个人贡献说明（每人一页）\n命名：学号_姓名_课程设计3.zip\n未按时提交按本次平时成绩0分计。有事请假请于11月25日前私聊我，不要在群里刷屏。\n\n另外12月2日周三3-4节在博学楼B302做中期答辩，分组名单后天发，先占好时间。\n\n[18:46] 何敏：\n老师，文件名里的姓名是中文还是拼音？\n\n[18:47] 张老师：\n中文即可，跟学籍一致。\n\n[18:48] 何敏：\n收到，那我先把原型补完\n\n[18:49] 赵磊：\n老师课件第三章练习要交吗\n\n[18:50] 张老师：\n那是课堂练习，不用交。这次只交我上面说的三样材料。\n\n[18:52] 刘远：\n晚上组队去图书馆吗，老地方\n\n[18:53] 何敏：\n我去，七点见",
+    "thread": [
+      {
+        "sender": "张老师",
+        "time": "18:30",
+        "text": "今天课上有同学问最小生成树和最短路径的区别，我补一句：Prim/Kruskal 针对无向图连通网；Dijkstra 是单源最短路径，不能有负权。对照例题放在群文件「对照例题.pdf」，有兴趣可以看，不是作业。"
+      },
+      {
+        "sender": "刘远",
+        "time": "18:31",
+        "text": "老师，有负权是不是用 Bellman-Ford？"
+      },
+      {
+        "sender": "张老师",
+        "time": "18:32",
+        "text": "对，有负权但没有负环可以用 Bellman-Ford。下节课会提一下，先了解即可。"
+      },
+      {
+        "sender": "张老师",
+        "time": "18:45",
+        "text": "各位同学好，软件工程课程设计第3次检查安排如下：\n\n时间：11月28日（周五）23:59前将材料提交到课程平台\n提交内容：需求规格说明书（PDF）、原型截图（zip）、个人贡献说明（每人一页）\n命名：学号_姓名_课程设计3.zip\n未按时提交按本次平时成绩0分计。有事请假请于11月25日前私聊我，不要在群里刷屏。\n\n另外12月2日周三3-4节在博学楼B302做中期答辩，分组名单后天发，先占好时间。"
+      },
+      {
+        "sender": "何敏",
+        "time": "18:46",
+        "text": "老师，文件名里的姓名是中文还是拼音？"
+      },
+      {
+        "sender": "张老师",
+        "time": "18:47",
+        "text": "中文即可，跟学籍一致。"
+      },
+      {
+        "sender": "何敏",
+        "time": "18:48",
+        "text": "收到，那我先把原型补完"
+      },
+      {
+        "sender": "赵磊",
+        "time": "18:49",
+        "text": "老师课件第三章练习要交吗"
+      },
+      {
+        "sender": "张老师",
+        "time": "18:50",
+        "text": "那是课堂练习，不用交。这次只交我上面说的三样材料。"
+      },
+      {
+        "sender": "刘远",
+        "time": "18:52",
+        "text": "晚上组队去图书馆吗，老地方"
+      },
+      {
+        "sender": "何敏",
+        "time": "18:53",
+        "text": "我去，七点见"
+      }
+    ]
+  },
+  "stu-email-scholarship": {
+    "role": "student",
+    "tag": "邮件",
+    "label": "转发：学院教务",
+    "unread": false,
+    "title": "关于申报2026年校级优秀学生奖学金的通知",
+    "time": "11月16日",
+    "kind": "mail",
+    "body": "转发：关于申报2026年校级优秀学生奖学金的通知\n\n各学院：请符合条件的同学于12月5日17:00前在教务系统「奖助学金」模块提交申请，同时将签字后的申请表扫描件发送至学院邮箱（本通知不设学院预审，逾期系统关闭）。\n\n材料：申请表、成绩单、获奖证书复印件、辅导员意见页（需签字）\n\n附件见原文。本邮件由学习委员转发，原件在学院公告栏。"
+  },
+  "stu-fyi-library": {
+    "role": "student",
+    "tag": "邮件",
+    "label": "图书馆办公室",
+    "unread": true,
+    "title": "本周末图书馆闭馆盘点",
+    "time": "今天 09:01",
+    "kind": "mail",
+    "body": "本周末图书馆闭馆盘点，11月22日-23日闭馆，电子资源正常。24日（周一）恢复开放。本通知无需回复。"
+  },
+  "stu-ambiguous-lab-report": {
+    "role": "student",
+    "tag": "班级群",
+    "label": "数据结构实验课",
+    "unread": true,
+    "title": "实验群里：闲聊补做之后，课代表转述改线上交",
+    "time": "今天 14:33",
+    "kind": "chat",
+    "body": "[14:20] 阿凯：\n这次实验我测的数据和讲义差好多，是不是量程没调对\n\n[14:22] 陈雪：\n我的也偏，要不问一下老师。对了晚上还去实验室补做吗\n\n[14:23] 阿凯：\n去吧，我把座位占了。你把上次的电路图发我一下？不是交作业，我对照着用\n\n[14:33] 课代表-周宁：\n老师说实验报告不用交纸质了，改成线上，具体啥时候截止他没说，让等课程平台通知。先别交纸质版。\n\n[14:34] 陈雪：\n啊那我刚才打印的岂不是浪费了\n\n[14:35] 阿凯：\n先别打了。走，晚饭还是老地方",
+    "thread": [
+      {
+        "sender": "阿凯",
+        "time": "14:20",
+        "text": "这次实验我测的数据和讲义差好多，是不是量程没调对"
+      },
+      {
+        "sender": "陈雪",
+        "time": "14:22",
+        "text": "我的也偏，要不问一下老师。对了晚上还去实验室补做吗"
+      },
+      {
+        "sender": "阿凯",
+        "time": "14:23",
+        "text": "去吧，我把座位占了。你把上次的电路图发我一下？不是交作业，我对照着用"
+      },
+      {
+        "sender": "课代表-周宁",
+        "time": "14:33",
+        "text": "老师说实验报告不用交纸质了，改成线上，具体啥时候截止他没说，让等课程平台通知。先别交纸质版。"
+      },
+      {
+        "sender": "陈雪",
+        "time": "14:34",
+        "text": "啊那我刚才打印的岂不是浪费了"
+      },
+      {
+        "sender": "阿凯",
+        "time": "14:35",
+        "text": "先别打了。走，晚饭还是老地方"
+      }
+    ]
+  },
+  "cou-email-stay-and-meeting": {
+    "role": "counselor",
+    "tag": "邮件",
+    "label": "学生处",
+    "unread": true,
+    "title": "汇总寒假留校申请表，并参加安全工作例会",
+    "time": "昨天 08:46",
+    "kind": "mail",
+    "body": "各年级辅导员：\n\n请于11月27日12:00前汇总本年级《学生寒假留校申请表》，电子版发本邮箱，纸质版交学生处203。模板见附件。\n\n另：11月26日下午14:30在行政楼会议室召开安全工作例会，请准时参加，并带本月宿舍查寝记录。未请假视为缺席。"
+  },
+  "cou-mixed-weekly-work": {
+    "role": "counselor",
+    "tag": "工作群",
+    "label": "学工工作群",
+    "unread": true,
+    "title": "学工群里：本周安排之后跟着资料分享和约饭",
+    "time": "今天 11:20",
+    "kind": "chat",
+    "body": "[11:20] 学生处-李老师：\n请各辅导员尽快完成本周工作：\n\n1）家庭经济困难学生秋季回访记录录入学工系统，截止11月25日。\n2）下周一（11月24日）晚7点班级开班会，主题是防诈骗，签到表会后当天提交。\n3）教务处通知：有3名学生（名单另附）学分预警，请本周内约谈并上传约谈记录。名单在内网，本邮件不附名单。\n\n[11:22] 辅导员-吴倩：\n收到\n\n[11:25] 辅导员-马哲：\n我这里有一份去年防诈骗班会的提纲和案例，发群文件里供参考，不是要交的材料，要用的自取。\n\n[11:28] 辅导员-吴倩：\n谢谢马老师。对了晚上谁还在学校，食堂一起吃饭？\n\n[11:29] 辅导员-马哲：\n我要查寝，就不去了。回访记录我尽量明天录完。",
+    "thread": [
+      {
+        "sender": "学生处-李老师",
+        "time": "11:20",
+        "text": "请各辅导员尽快完成本周工作：\n\n1）家庭经济困难学生秋季回访记录录入学工系统，截止11月25日。\n2）下周一（11月24日）晚7点班级开班会，主题是防诈骗，签到表会后当天提交。\n3）教务处通知：有3名学生（名单另附）学分预警，请本周内约谈并上传约谈记录。名单在内网，本邮件不附名单。"
+      },
+      {
+        "sender": "辅导员-吴倩",
+        "time": "11:22",
+        "text": "收到"
+      },
+      {
+        "sender": "辅导员-马哲",
+        "time": "11:25",
+        "text": "我这里有一份去年防诈骗班会的提纲和案例，发群文件里供参考，不是要交的材料，要用的自取。"
+      },
+      {
+        "sender": "辅导员-吴倩",
+        "time": "11:28",
+        "text": "谢谢马老师。对了晚上谁还在学校，食堂一起吃饭？"
+      },
+      {
+        "sender": "辅导员-马哲",
+        "time": "11:29",
+        "text": "我要查寝，就不去了。回访记录我尽量明天录完。"
+      }
+    ]
+  },
+  "cou-fyi-classroom-booking": {
+    "role": "counselor",
+    "tag": "邮件",
+    "label": "教务处OA",
+    "unread": false,
+    "title": "教室借用改为网上审批",
+    "time": "今天 16:05",
+    "kind": "mail",
+    "body": "根据学校通知，12月起教室借用改为网上审批，原纸质申请表停用。政策原文见OA。请知悉，无需回执。"
+  }
+};
+    const tasks = {
+  "stu-wechat-class-forward": [
+    {
+      "title": "交普通话报名表",
+      "action": "打印并签名「普通话报名表2026秋」（群文件置顶），携带学生证复印件交到教务办二教105",
+      "due": "待确认",
+      "quote": "对了普通话那个表我也不确定是这周五还是下周五，辅导员原话是「尽快，最好这周」",
+      "warn": true,
+      "materials": "报名表（群文件置顶）、签名、学生证复印件"
+    },
+    {
+      "title": "报名迎新志愿者（自愿）",
+      "action": "下周三下午若没课、愿意参加迎新志愿者，把名字发给班委；非强制",
+      "due": "11月25日",
+      "quote": "下周三下午没课的来帮一下迎新志愿者，自愿的，想去的把名字发给我"
+    },
+    {
+      "title": "准备宿舍卫生抽查",
+      "action": "下周一起不要把脏衣服堆在宿舍门口，做好卫生",
+      "due": "11月23日",
+      "quote": "学院说下周一开始查宿舍卫生，晚上别把脏衣服堆门口就行"
+    }
+  ],
+  "stu-course-course-check": [
+    {
+      "title": "提交课程设计第3次检查材料",
+      "action": "在课程平台提交命名为「学号_姓名_课程设计3.zip」的材料包，姓名用中文、与学籍一致",
+      "due": "11月28日",
+      "quote": "时间：11月28日（周五）23:59前将材料提交到课程平台",
+      "materials": "需求规格说明书、原型截图、个人贡献说明"
+    },
+    {
+      "title": "如需请假请私聊老师",
+      "action": "若无法按时提交，于11月25日前私聊任课老师，不要在群里刷屏",
+      "due": "11月25日",
+      "quote": "有事请假请于11月25日前私聊我，不要在群里刷屏。"
+    },
+    {
+      "title": "参加中期答辩",
+      "action": "12月2日周三3-4节到博学楼B302参加中期答辩，先占好时间（分组名单后天发）",
+      "due": "12月2日",
+      "quote": "另外12月2日周三3-4节在博学楼B302做中期答辩，分组名单后天发，先占好时间。"
+    }
+  ],
+  "stu-email-scholarship": [
+    {
+      "title": "申报校级优秀学生奖学金",
+      "action": "在教务系统「奖助学金」模块提交申请，并将签字后的申请表扫描件发至学院邮箱",
+      "due": "12月5日",
+      "quote": "请符合条件的同学于12月5日17:00前在教务系统「奖助学金」模块提交申请，同时将签字后的申请表扫描件发送至学院邮箱",
+      "materials": "申请表、成绩单、证书复印件、辅导员意见页"
+    }
+  ],
+  "stu-fyi-library": [
+    {
+      "title": "本周末图书馆闭馆盘点",
+      "action": "知悉11月22日-23日图书馆闭馆，24日恢复开放；电子资源不受影响，无需回复",
+      "due": "仅阅知",
+      "quote": "本周末图书馆闭馆盘点，11月22日-23日闭馆，电子资源正常。24日（周一）恢复开放。本通知无需回复。",
+      "fyi": true
+    }
+  ],
+  "stu-ambiguous-lab-report": [
+    {
+      "title": "改交线上实验报告（截止未公布）",
+      "action": "不要再交纸质实验报告，改为线上提交；截止日期等待课程平台通知，暂不编造",
+      "due": "待确认",
+      "quote": "老师说实验报告不用交纸质了，改成线上，具体啥时候截止他没说，让等课程平台通知。先别交纸质版。",
+      "warn": true
+    }
+  ],
+  "cou-email-stay-and-meeting": [
+    {
+      "title": "汇总寒假留校申请表",
+      "action": "汇总本年级《学生寒假留校申请表》，电子版发回本邮件，纸质版交学生处203",
+      "due": "11月27日 12:00",
+      "quote": "请于11月27日12:00前汇总本年级《学生寒假留校申请表》，电子版发本邮箱，纸质版交学生处203。",
+      "materials": "留校申请表电子版与纸质版"
+    },
+    {
+      "title": "参加安全工作例会",
+      "action": "到行政楼会议室参加安全工作例会，并携带本月宿舍查寝记录；未请假视为缺席",
+      "due": "11月26日 14:30",
+      "quote": "11月26日下午14:30在行政楼会议室召开安全工作例会，请准时参加，并带本月宿舍查寝记录。未请假视为缺席。"
+    }
+  ],
+  "cou-mixed-weekly-work": [
+    {
+      "title": "录入秋季回访记录",
+      "action": "将家庭经济困难学生秋季回访记录录入学工系统",
+      "due": "11月25日",
+      "quote": "家庭经济困难学生秋季回访记录录入学工系统，截止11月25日。"
+    },
+    {
+      "title": "开防诈骗班会并提交签到表",
+      "action": "11月24日晚7点召开防诈骗主题班会，签到表于会后当天提交",
+      "due": "11月24日",
+      "quote": "下周一（11月24日）晚7点班级开班会，主题是防诈骗，签到表会后当天提交。"
+    },
+    {
+      "title": "约谈学分预警学生（名单未附）",
+      "action": "本周内约谈3名学分预警学生并上传约谈记录；名单在内网，本通知未附名单，需自行确认",
+      "due": "待确认",
+      "quote": "有3名学生（名单另附）学分预警，请本周内约谈并上传约谈记录。名单在内网，本邮件不附名单。",
+      "warn": true,
+      "materials": "约谈记录、内网名单"
+    }
+  ],
+  "cou-fyi-classroom-booking": [
+    {
+      "title": "教室借用改为网上审批",
+      "action": "知悉12月起教室借用改为网上审批，原纸质申请表停用，无需回执",
+      "due": "仅阅知",
+      "quote": "12月起教室借用改为网上审批，原纸质申请表停用。政策原文见OA。请知悉，无需回执。",
+      "fyi": true
+    }
+  ]
+};
+    const pasteSamples = {
+      stu: "[19:02] 阿凯：\n晚上食堂吗，我饿了\n\n[19:03] 陈雪：\n等我一下，高数笔记我传群文件了，不是作业，要的自取\n\n[19:10] 课代表-周宁：\n老师刚在群里说：英语四级报名今晚12点截止，系统在教务处网站「考试报名」。要上传一寸白底证件照，文件名用学号。没报名的自己抓紧，不要再问群里截不截报名了，以系统时间为准。\n\n[19:11] 阿凯：\n收到，那我先不去吃饭了",
+      cou: "请于11月30日17:00前报送本班参加冬季长跑的学生名单（Excel），发本邮箱，并注明是否有免跑申请。模板在上次工作群文件里。逾期视为无人参加。"
+    };
+
+
+    const fullThreads = {};
+    const fullTasks = {};
+    Object.keys(notices).forEach((id) => {
+      if (notices[id].thread) fullThreads[id] = notices[id].thread.slice();
+    });
+    Object.keys(tasks).forEach((id) => { fullTasks[id] = (tasks[id] || []).slice(); });
+
+    let demoPhase = "idle"; // idle | running | classify | extracted | after
+    let pipelineStep = "";
+    let pipelineLog = [];
+    let demoTimers = [];
+    const CLASS_PRELUDE = 3;
+
+    function clearDemoTimers() {
+      demoTimers.forEach(clearTimeout);
+      demoTimers = [];
+    }
+    function later(ms, fn) { demoTimers.push(setTimeout(fn, ms)); }
+
+    const IDLE_LOG = ["班级群此时还在闲聊。点击右侧按钮，看班长通知突然进来后，系统怎样识别并写入待办。"];
+
+    function resetClassDemo() {
+      clearDemoTimers();
+      notices[STUDENT].thread = fullThreads[STUDENT].slice(0, CLASS_PRELUDE);
+      tasks[STUDENT] = [];
+      taskIndex = 0;
+      demoPhase = "idle";
+      pipelineStep = "";
+      pipelineLog = IDLE_LOG.slice();
+    }
+
+    function classLog(classify=true, extracted=false, after=false) {
+      const lines = [];
+      if (classify || extracted || after) {
+        lines.push("接入完成：收到班长-周琪 21:16 的新消息。");
+        lines.push("识别完成：这是正式通知（含报名、志愿者、查宿舍），不是闲聊。");
+        lines.push("已排除：高数作业讨论、约饭约打球（闲聊）。");
+      }
+      if (extracted || after) {
+        lines.push("抽取完成：3 条任务，其中「交普通话报名表」截止日期待确认，已回指原文。");
+        lines.push("已写入今日待办。");
+      }
+      if (after) {
+        lines.push("后续消息：课堂笔记已声明不是作业，不写入待办。");
+        lines.push("追问「报名表在哪个群文件」已并入原任务，不另开一条。");
+      }
+      return lines;
+    }
+
+    function applyScene(scene) {
+      current = STUDENT;
+      role = "student";
+      $("role-student").classList.add("on");
+      $("role-counselor").classList.remove("on");
+      resetClassDemo();
+      if (scene === "idle" || !scene) {
+        render();
+        return;
+      }
+      notices[STUDENT].thread = fullThreads[STUDENT].slice(0, CLASS_PRELUDE + 1);
+      if (scene === "classify") {
+        demoPhase = "classify";
+        pipelineStep = "classify";
+        pipelineLog = ["接入完成：收到班长-周琪 21:16 的新消息。", "正在区分：正式通知 / 闲聊 / 知识分享…"];
+      }
+      if (scene === "extracted" || scene === "after") {
+        tasks[STUDENT] = fullTasks[STUDENT].slice();
+        demoPhase = scene;
+        pipelineStep = "write";
+        pipelineLog = classLog(true, true, scene === "after");
+        if (scene === "after") notices[STUDENT].thread = fullThreads[STUDENT].slice();
+      }
+      render();
+    }
+
+    function runIncomingDemo() {
+      if (demoPhase === "running") return;
+      current = STUDENT;
+      role = "student";
+      $("role-student").classList.add("on");
+      $("role-counselor").classList.remove("on");
+      resetClassDemo();
+      demoPhase = "running";
+      pipelineStep = "ingest";
+      pipelineLog = ["正在接入「软件工程2024级1班」的新消息…"];
+      document.querySelectorAll(".step").forEach((s) => s.classList.toggle("on", s.dataset.step === "1"));
+      render();
+      later(800, () => {
+        notices[STUDENT].thread = fullThreads[STUDENT].slice(0, CLASS_PRELUDE + 1);
+        demoPhase = "classify";
+        pipelineStep = "classify";
+        pipelineLog = ["接入完成：收到班长-周琪 21:16 的新消息。", "正在区分：正式通知 / 闲聊 / 知识分享…"];
+        render();
+      });
+      later(1800, () => {
+        pipelineStep = "extract";
+        pipelineLog = classLog(true, false, false).concat(["正在抽取结构化任务，并核对原文位置…"]);
+        render();
+      });
+      later(2800, () => {
+        tasks[STUDENT] = fullTasks[STUDENT].slice();
+        taskIndex = 0;
+        demoPhase = "extracted";
+        pipelineStep = "write";
+        pipelineLog = classLog(true, true, false);
+        render();
+      });
+      later(4000, () => {
+        notices[STUDENT].thread = fullThreads[STUDENT].slice();
+        demoPhase = "after";
+        pipelineLog = classLog(true, true, true);
+        render();
+      });
+    }
+
+    function renderPipeline() {
+      const order = ["ingest", "classify", "extract", "write"];
+      const currentIdx = order.indexOf(pipelineStep);
+      document.querySelectorAll("#pipeline-steps li").forEach((li) => {
+        const idx = order.indexOf(li.dataset.key);
+        li.classList.remove("run", "done");
+        if (currentIdx >= 0 && idx < currentIdx) li.classList.add("done");
+        if (idx === currentIdx) li.classList.add(demoPhase === "after" ? "done" : "run");
+        if (demoPhase === "after" || (demoPhase === "extracted" && li.dataset.key === "write")) li.classList.add("done");
+      });
+      if (demoPhase === "after") {
+        document.querySelectorAll("#pipeline-steps li").forEach((li) => { li.classList.remove("run"); li.classList.add("done"); });
+      }
+      const lines = pipelineLog.length ? pipelineLog : IDLE_LOG;
+      $("pipeline-log").innerHTML = lines.map((l, i) => `<div class="${i === lines.length - 1 ? "" : "mute"}">${escapeHtml(l)}</div>`).join("");
+    }
+
+    let role = "student";
+    let current = STUDENT;
+    let taskIndex = 0;
+
+    const $ = (id) => document.getElementById(id);
+
+    function idsForRole() {
+      return Object.keys(notices).filter((id) => notices[id].role === role);
+    }
+
+    function renderPills() {
+      const items = [];
+      idsForRole().forEach((id) => {
+        (tasks[id] || []).forEach((t, i) => {
+          if (t.fyi) return;
+          items.push({ id, i, title: t.title, due: t.due, warn: t.warn });
+        });
+      });
+      $("pills").innerHTML = items.map((p, idx) =>
+        `<button class="pill ${p.warn ? "warn" : ""}" data-id="${p.id}" data-i="${p.i}">${p.title}<em>${p.due}</em></button>`
+      ).join("");
+    }
+
+    function renderList() {
+      $("list").innerHTML = idsForRole().map((id) => {
+        const n = notices[id];
+        const ts = tasks[id] || [];
+        const pending = ts.filter((t) => !t.fyi && !t.done).length;
+        let status = pending ? pending + " 件待办" : (ts.some(t=>t.fyi) ? "仅阅知" : "已处理");
+        const title = (id === STUDENT && (demoPhase === "idle" || demoPhase === "running" || demoPhase === "classify"))
+          ? "班级群正在聊天" : n.title;
+        if (id === STUDENT && (demoPhase === "idle" || demoPhase === "running" || demoPhase === "classify")) status = "未拆解 · 群还在聊";
+        return `<div class="item ${id === current ? "on" : ""}" data-id="${id}">
+          <div class="meta"><span class="dot ${n.unread ? "" : "off"}"></span><span class="tag">${n.tag}</span><span class="tag">${n.label}</span></div>
+          <h4>${title}</h4>
+          <p>${n.time} · ${status}</p>
+        </div>`;
+      }).join("");
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+    }
+
+    function renderArticle() {
+      const n = notices[current];
+      const t = (tasks[current] || [])[taskIndex];
+      const quote = t && t.quote ? escapeHtml(t.quote) : "";
+      const paint = (raw) => {
+        let body = escapeHtml(raw);
+        if (quote) body = body.replace(quote, `<mark>${quote}</mark>`);
+        return body;
+      };
+      if (n.thread) {
+        const msgs = n.thread.map((m, idx) => {
+          const official = /班长-周琪|张老师|课代表-周宁|学生处-/.test(m.sender);
+          const isNew = current === STUDENT && official && m.sender.indexOf("班长") === 0 && (demoPhase === "classify" || demoPhase === "running" || demoPhase === "extracted");
+          return `<div class="msg ${official ? "official" : ""} ${isNew ? "new" : ""}"><div class="who">${escapeHtml(m.sender)} · ${escapeHtml(m.time)}${isNew ? " · 刚刚" : ""}</div><div class="bubble">${paint(m.text)}</div></div>`;
+        }).join("");
+        $("article").innerHTML = `<div class="thread" id="thread">${msgs}</div>`;
+        $("source-title").textContent = "群聊记录";
+        const root = $("article");
+        const mark = root.querySelector("mark");
+        if (mark) {
+          const r = root.getBoundingClientRect();
+          const m = mark.getBoundingClientRect();
+          root.scrollTop += m.top - r.top - r.height / 2 + m.height / 2;
+        }
+        return;
+      }
+      const body = paint(n.body);
+      const inner = n.kind === "mail"
+        ? `<div class="mail-head"><strong>${escapeHtml(n.title)}</strong>来自 ${escapeHtml(n.label)} · ${escapeHtml(n.time)}</div><div class="body">${body}</div>`
+        : `<div class="body"><div class="bubble">${body}</div></div>`;
+      $("article").innerHTML = inner;
+      $("source-title").textContent = n.kind === "mail" ? "邮件原文" : "群消息原文";
+    }
+
+    function renderTasks() {
+      const list = tasks[current] || [];
+      let html = "";
+      if (current === STUDENT && list.length === 0) {
+        if (demoPhase === "running" || demoPhase === "classify") {
+          html = `<div class="cta-box"><p>正在识别这条新消息：是正式通知、闲聊，还是知识分享…</p></div>`;
+        } else {
+        html = `<div class="cta-box">
+          <p>这条班级群此时还只有闲聊，系统还没有往待办里写任务。点下面的按钮，模拟班长突然发来一条通知。</p>
+          <button class="paste-btn" id="run-demo" type="button">模拟：班长在群里发来通知</button>
+        </div>`;
+        }
+      } else if (current === STUDENT && (demoPhase === "extracted" || demoPhase === "after")) {
+        html = `<div class="cta-box" style="padding:10px 16px;margin-bottom:0;">
+          <button class="ghost" id="replay-demo" type="button">再看一次识别过程</button>
+        </div>`;
+      }
+      html += list.map((t, i) => `
+        <div class="card ${i === taskIndex ? "on" : ""} ${t.warn ? "warn" : ""} ${t.fyi ? "fyi" : ""} ${t.newCard ? "new" : ""}" data-i="${i}">
+          <h4>${t.title}</h4>
+          <div class="badges">
+            <span class="badge ${t.warn ? "warn" : t.fyi ? "" : "ok"}">${t.due}</span>
+            ${t.materials ? `<span class="badge">需交：${t.materials}</span>` : ""}
+          </div>
+          <p>${t.action}</p>
+          <div class="row-actions"><label><input type="checkbox" ${t.done ? "checked" : ""} data-done="${i}"> 已完成</label></div>
+        </div>`).join("");
+      $("tasks").innerHTML = html;
+      const run = $("run-demo");
+      const replay = $("replay-demo");
+      if (run) run.onclick = () => runIncomingDemo();
+      if (replay) replay.onclick = () => runIncomingDemo();
+    }
+
+    function render() {
+      renderPills();
+      renderList();
+      renderArticle();
+      renderTasks();
+      renderPipeline();
+    }
+
+    function selectNotice(id, i = 0) {
+      current = id;
+      taskIndex = i;
+      render();
+    }
+
+    $("list").addEventListener("click", (e) => {
+      const item = e.target.closest(".item");
+      if (item) selectNotice(item.dataset.id);
+    });
+    $("tasks").addEventListener("click", (e) => {
+      const done = e.target.closest("[data-done]");
+      if (done) {
+        const i = Number(done.dataset.done);
+        tasks[current][i].done = done.checked;
+        render();
+        return;
+      }
+      const card = e.target.closest(".card");
+      if (card) { taskIndex = Number(card.dataset.i); render(); }
+    });
+    $("pills").addEventListener("click", (e) => {
+      const pill = e.target.closest(".pill");
+      if (pill) selectNotice(pill.dataset.id, Number(pill.dataset.i));
+    });
+    $("role-student").onclick = () => {
+      role = "student"; current = STUDENT; taskIndex = 0;
+      $("role-student").classList.add("on");
+      $("role-counselor").classList.remove("on");
+      document.querySelectorAll(".step").forEach((s) => s.classList.toggle("on", s.dataset.step === "3"));
+      render();
+    };
+    $("role-counselor").onclick = () => {
+      role = "counselor"; current = COUNSELOR; taskIndex = 0;
+      $("role-counselor").classList.add("on");
+      $("role-student").classList.remove("on");
+      document.querySelectorAll(".step").forEach((s) => s.classList.toggle("on", s.dataset.step === "3"));
+      render();
+    };
+
+    const markReadBtnSetup = () => {
+      // step 2 is triggered when clicking the tour chip
+    };
+    $("tour").addEventListener("click", (e) => {
+      const step = e.target.closest(".step");
+      if (!step) return;
+      document.querySelectorAll(".step").forEach((s) => s.classList.toggle("on", s === step));
+      if (step.dataset.step === "1") {
+        runIncomingDemo();
+      }
+      if (step.dataset.step === "2") {
+        notices[STUDENT].unread = false;
+        role = "student"; current = STUDENT;
+        $("role-student").classList.add("on");
+        $("role-counselor").classList.remove("on");
+        render();
+      }
+      if (step.dataset.step === "3") $("role-counselor").click();
+      if (step.dataset.step === "4") $("paste").showModal();
+    });
+
+    $("open-paste").onclick = () => $("paste").showModal();
+    $("close-paste").onclick = () => $("paste").close();
+    document.querySelectorAll(".sample").forEach((btn) => {
+      btn.onclick = () => { $("paste-text").value = pasteSamples[btn.dataset.sample]; };
+    });
+    $("run-paste").onclick = () => {
+      const text = $("paste-text").value.trim();
+      if (!text) return;
+      const id = "paste-" + Date.now();
+      notices[id] = {
+        role, tag: $("src").value, label: "刚刚粘贴", unread: true,
+        title: text.slice(0, 22) + (text.length > 22 ? "…" : ""),
+        time: "刚刚", kind: $("src").value.includes("邮") ? "mail" : "chat",
+        body: text
+      };
+      tasks[id] = [{ title: "原型示意：这里将由 Agent 拆出任务", action: "正式站点会调用 Cloud Agent，按原文拆条并回指摘录。本原型只演示入口。", due: "待拆解", quote: text.slice(0, 20), warn: true }];
+      current = id; taskIndex = 0; $("paste").close();
+      document.querySelectorAll(".step").forEach((s) => s.classList.toggle("on", s.dataset.step === "4"));
+      render();
+    };
+
+
+    const params = new URLSearchParams(location.search);
+    resetClassDemo();
+    if (params.get("role") === "counselor") $("role-counselor").click();
+    const nid = params.get("notice");
+    if (nid && notices[nid]) {
+      role = notices[nid].role;
+      if (role === "counselor") {
+        $("role-counselor").classList.add("on");
+        $("role-student").classList.remove("on");
+      }
+      current = nid; taskIndex = 0;
+    }
+    if (params.get("paste") === "1") $("paste").showModal();
+    const scene = params.get("scene");
+    if (scene) applyScene(scene);
+    else render();
+  </script>
+</body>
+</html>
